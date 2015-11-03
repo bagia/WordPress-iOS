@@ -118,10 +118,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         self.tableSections = @[@(SiteSettingsSectionGeneral)];
     } else {
         self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount)];
-    }    
-    if (self.blog.isAdmin) {
-        self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionWriting)];
     }
+    self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionWriting)];
     if ([self.blog supports:BlogFeatureRemovable]) {
         self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
     }
@@ -178,6 +176,10 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             return SiteSettingsAccountCount;
         break;
         case SiteSettingsSectionWriting: {
+            if (!self.blog.isAdmin) {
+                // If we're not admin, we just want to show the geotagging cell
+                return 1;
+            }
             NSInteger rowsToHide = 0;
             if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
                 //  NOTE: Sergio Estevao (2015-09-23): Hides the related post for self-hosted sites not in jetpack
