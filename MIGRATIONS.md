@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 41 (@bagia 2015-11-02)
+
+- `Blog` added a new boolean attribute called `canUploadFiles` to store upload_files capability on a blog
+
 ## WordPress 40 (@alexcurylo 2015-10-14)
 
 Changes to the data model:

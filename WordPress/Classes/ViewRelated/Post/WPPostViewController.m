@@ -2051,7 +2051,24 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController
 {
-    [self showMediaPicker];
+    if (self.post.blog.canUploadFiles) {
+        [self showMediaPicker];
+        return;
+    }
+
+    // we're not allowed to upload files on this blog. let's let the user know
+    // by displaying an informative tooltip.
+    CGRect blogPickerFrame = self.blogPickerButton.titleLabel.frame;
+    CGRect targetFrame = CGRectMake(blogPickerFrame.origin.x + blogPickerFrame.size.width / 2.0,
+                                    0.0,
+                                    blogPickerFrame.size.width,
+                                    0.0);
+    NSString *tooltipText = NSLocalizedString(@"You are not allowed to add media on this blog",
+                                              @"Tooltip displayed when people have the contributor role and hence are not allowed to add media to the post");
+    [WPTooltip displayTooltipInView:self.view
+                          fromFrame:targetFrame
+                           withText:tooltipText
+                          direction:WPTooltipDirectionDown];
 }
 
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController
